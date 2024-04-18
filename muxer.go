@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -92,8 +93,31 @@ type Muxer struct {
 	forceSwitch    bool
 }
 
+var binaryPublish func([]byte)
+
+func publishSegmentToBinary(segment muxerSegment) error {
+	//get segment into a byte buffer
+	r, err := segment.reader()
+	if err != nil {
+		panic(err)
+	}
+	var buffer bytes.Buffer
+	w := &buffer
+	_, err = io.Copy(w, r)
+	if err != nil {
+		panic(err)
+	}
+
+	binaryPublish(w.Bytes())
+
+	return nil
+}
+
 // Start initializes the muxer.
-func (m *Muxer) Start() error {
+func (m *Muxer) Start(publishTSPart func([]byte)) error {
+
+	binaryPublish = publishTSPart
+
 	if m.Variant == 0 {
 		m.Variant = MuxerVariantLowLatency
 	}
@@ -173,7 +197,7 @@ func (m *Muxer) Start() error {
 			audioTrack:         m.AudioTrack,
 			prefix:             m.prefix,
 			factory:            m.storageFactory,
-			publishSegment:     m.server.publishSegment,
+			publishSegment:     publishSegmentToBinary,
 		}
 		m.segmenter.initialize()
 	} else {

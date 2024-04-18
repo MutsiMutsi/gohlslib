@@ -126,7 +126,7 @@ func TestMuxerVideoAudio(t *testing.T) {
 				AudioTrack:         testAudioTrack,
 			}
 
-			err := m.Start()
+			err := m.Start(nil)
 			require.NoError(t, err)
 			defer m.Close()
 
@@ -352,7 +352,7 @@ func TestMuxerVideoOnly(t *testing.T) {
 				VideoTrack:         testVideoTrack,
 			}
 
-			err := m.Start()
+			err := m.Start(nil)
 			require.NoError(t, err)
 			defer m.Close()
 
@@ -466,7 +466,7 @@ func TestMuxerAudioOnly(t *testing.T) {
 				AudioTrack:         testAudioTrack,
 			}
 
-			err := m.Start()
+			err := m.Start(nil)
 			require.NoError(t, err)
 			defer m.Close()
 
@@ -562,7 +562,7 @@ func TestMuxerCloseBeforeData(t *testing.T) {
 		},
 	}
 
-	err := m.Start()
+	err := m.Start(nil)
 	require.NoError(t, err)
 
 	m.Close()
@@ -586,7 +586,7 @@ func TestMuxerMaxSegmentSize(t *testing.T) {
 		VideoTrack:         testVideoTrack,
 	}
 
-	err := m.Start()
+	err := m.Start(nil)
 	require.NoError(t, err)
 	defer m.Close()
 
@@ -605,7 +605,7 @@ func TestMuxerDoubleRead(t *testing.T) {
 		VideoTrack:         testVideoTrack,
 	}
 
-	err := m.Start()
+	err := m.Start(nil)
 	require.NoError(t, err)
 	defer m.Close()
 
@@ -669,7 +669,7 @@ func TestMuxerSaveToDisk(t *testing.T) {
 				Directory:          dir,
 			}
 
-			err = m.Start()
+			err = m.Start(nil)
 			require.NoError(t, err)
 
 			err = m.WriteH26x(testTime, 0, [][]byte{
@@ -752,7 +752,7 @@ func TestMuxerDynamicParams(t *testing.T) {
 		VideoTrack:         testVideoTrack,
 	}
 
-	err := m.Start()
+	err := m.Start(nil)
 	require.NoError(t, err)
 	defer m.Close()
 
@@ -842,7 +842,7 @@ func TestMuxerFMP4ZeroDuration(t *testing.T) {
 		VideoTrack:         testVideoTrack,
 	}
 
-	err := m.Start()
+	err := m.Start(nil)
 	require.NoError(t, err)
 	defer m.Close()
 
@@ -870,7 +870,7 @@ func TestMuxerFMP4NegativeTimestamp(t *testing.T) {
 		AudioTrack:         testAudioTrack,
 	}
 
-	err := m.Start()
+	err := m.Start(nil)
 	require.NoError(t, err)
 	defer m.Close()
 
@@ -981,7 +981,7 @@ func TestMuxerFMP4SequenceNumber(t *testing.T) {
 		VideoTrack:      testVideoTrack,
 	}
 
-	err := m.Start()
+	err := m.Start(nil)
 	require.NoError(t, err)
 	defer m.Close()
 
@@ -1031,7 +1031,7 @@ func TestMuxerInvalidFolder(t *testing.T) {
 				Directory:       "/nonexisting",
 			}
 
-			err := m.Start()
+			err := m.Start(nil)
 			require.NoError(t, err)
 			defer m.Close()
 

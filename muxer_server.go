@@ -806,10 +806,10 @@ func (s *muxerServer) publishSegmentInner(segment muxerSegment) error {
 func (s *muxerServer) publishSegment(segment muxerSegment) error {
 	s.mutex.Lock()
 	err := s.publishSegmentInner(segment)
-	s.mutex.Unlock()
 	if err != nil {
-		return err
+		panic(err)
 	}
+	s.mutex.Unlock()
 
 	s.cond.Broadcast()
 	return nil
